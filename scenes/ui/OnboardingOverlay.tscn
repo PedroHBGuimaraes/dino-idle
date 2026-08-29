@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://bncf37gp6mp7e"]
+
+[ext_resource type="Script" path="res://scenes/ui/OnboardingOverlay.gd" id="1"]
+[ext_resource type="StyleBox" path="res://resources/theme/panel_glass.tres" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_highlight"]
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.85, 0.3, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[node name="OnboardingOverlay" type="CanvasLayer"]
+layer = 20
+script = ExtResource("1")
+
+[node name="Root" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="DimTop" type="ColorRect" parent="Root"]
+unique_name_in_owner = true
+mouse_filter = 0
+color = Color(0.02, 0.02, 0.02, 0.75)
+
+[node name="DimBottom" type="ColorRect" parent="Root"]
+unique_name_in_owner = true
+mouse_filter = 0
+color = Color(0.02, 0.02, 0.02, 0.75)
+
+[node name="DimLeft" type="ColorRect" parent="Root"]
+unique_name_in_owner = true
+mouse_filter = 0
+color = Color(0.02, 0.02, 0.02, 0.75)
+
+[node name="DimRight" type="ColorRect" parent="Root"]
+unique_name_in_owner = true
+mouse_filter = 0
+color = Color(0.02, 0.02, 0.02, 0.75)
+
+[node name="Highlight" type="Panel" parent="Root"]
+unique_name_in_owner = true
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_highlight")
+
+[node name="InfoPanel" type="PanelContainer" parent="Root"]
+mouse_filter = 0
+anchor_left = 0.06
+anchor_top = 0.72
+anchor_right = 0.94
+anchor_bottom = 0.97
+theme_override_styles/panel = ExtResource("2")
+
+[node name="Margin" type="MarginContainer" parent="Root/InfoPanel"]
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="Root/InfoPanel/Margin"]
+theme_override_constants/separation = 8
+
+[node name="StepLabel" type="Label" parent="Root/InfoPanel/Margin/VBox"]
+unique_name_in_owner = true
+theme_override_colors/font_color = Color(0.75, 0.72, 0.65, 1)
+theme_override_font_sizes/font_size = 13
+text = "1/3"
+
+[node name="TitleLabel" type="Label" parent="Root/InfoPanel/Margin/VBox"]
+unique_name_in_owner = true
+theme_override_font_sizes/font_size = 20
+text = "Título"
+autowrap_mode = 3
+
+[node name="DescriptionLabel" type="Label" parent="Root/InfoPanel/Margin/VBox"]
+unique_name_in_owner = true
+size_flags_vertical = 3
+text = "Descrição"
+autowrap_mode = 3
+
+[node name="NextButton" type="Button" parent="Root/InfoPanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+text = "ONBOARDING_NEXT"
+
+[node name="SkipButton" type="Button" parent="Root"]
+unique_name_in_owner = true
+mouse_filter = 0
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -148.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 60.0
+text = "ONBOARDING_SKIP"

@@ -1,0 +1,88 @@
+[gd_scene load_steps=5 format=3 uid="uid://hudpanel001"]
+
+[ext_resource type="Script" path="res://scenes/ui/HUD.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_food.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_ad_play.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_settings.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_achievements.png" id="5"]
+
+[node name="HUD" type="MarginContainer"]
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+script = ExtResource("1")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+theme_override_constants/separation = 6
+
+[node name="FoodRow" type="HBoxContainer" parent="VBox"]
+theme_override_constants/separation = 6
+
+[node name="FoodIcon" type="TextureRect" parent="VBox/FoodRow"]
+custom_minimum_size = Vector2(28, 28)
+texture_filter = 1
+stretch_mode = 5
+texture = ExtResource("2")
+
+[node name="FoodLabel" type="Label" parent="VBox/FoodRow"]
+unique_name_in_owner = true
+size_flags_horizontal = 3
+text = "Comida: 0"
+theme_override_font_sizes/font_size = 28
+
+[node name="AchievementsButton" type="TextureButton" parent="VBox/FoodRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(44, 44)
+texture_normal = ExtResource("5")
+stretch_mode = 3
+
+[node name="SettingsButton" type="TextureButton" parent="VBox/FoodRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(44, 44)
+texture_normal = ExtResource("4")
+stretch_mode = 3
+
+[node name="PrestigeButton" type="Button" parent="VBox/FoodRow"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(44, 44)
+theme_override_font_sizes/font_size = 22
+flat = true
+text = "♻"
+
+[node name="ProductionLabel" type="Label" parent="VBox"]
+unique_name_in_owner = true
+theme_override_colors/font_color = Color(0.6, 0.9, 0.65, 1)
+theme_override_font_sizes/font_size = 14
+text = "Produção: 0/seg"
+
+[node name="ComboLabel" type="Label" parent="VBox"]
+unique_name_in_owner = true
+theme_override_colors/font_color = Color(1, 0.6, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "HUD_COMBO_ZERO"
+
+[node name="AdButtons" type="HBoxContainer" parent="VBox"]
+unique_name_in_owner = true
+theme_override_constants/separation = 8
+
+[node name="BoostButton" type="Button" parent="VBox/AdButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+size_flags_horizontal = 3
+clip_text = true
+text_overrun_behavior = 3
+icon = ExtResource("3")
+text = "Dobrar produção (30 min)"
+
+[node name="BonusButton" type="Button" parent="VBox/AdButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+size_flags_horizontal = 3
+clip_text = true
+text_overrun_behavior = 3
+icon = ExtResource("3")
+text = "HUD_BONUS_BUTTON"

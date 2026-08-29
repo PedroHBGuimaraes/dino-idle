@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="PrestigeUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/prestige_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"tap_4"
+display_name = "Força dos Titãs"
+description = "A força dos maiores dinos passa pra sua mão: +10% no valor do toque por nível."
+target = 1
+base_cost = 300.0
+cost_growth = 1.28
+value_per_level = 0.10
+max_level = 15

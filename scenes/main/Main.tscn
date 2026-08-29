@@ -1,0 +1,238 @@
+[gd_scene load_steps=20 format=3 uid="uid://mainscene001"]
+
+[ext_resource type="Script" path="res://scenes/main/Main.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ShopPanel.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/ui/OfflineEarningsPopup.tscn" id="4"]
+[ext_resource type="Texture2D" path="res://assets/scenes/bg_far.png" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/ui/SettingsPopup.tscn" id="6"]
+[ext_resource type="Texture2D" path="res://assets/scenes/bg_near.png" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/ui/CollectionCompletePopup.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/ui/OnboardingOverlay.tscn" id="9"]
+[ext_resource type="PackedScene" path="res://scenes/ui/SpeciesDetailPopup.tscn" id="10"]
+[ext_resource type="PackedScene" path="res://scenes/ui/AchievementsPopup.tscn" id="11"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PrestigePopup.tscn" id="16"]
+[ext_resource type="Texture2D" path="res://assets/scenes/bg_flower_cluster.png" id="12"]
+[ext_resource type="Texture2D" path="res://assets/scenes/bg_distant_dino.png" id="13"]
+[ext_resource type="Texture2D" path="res://assets/particles/leaf.png" id="14"]
+[ext_resource type="Texture2D" path="res://assets/particles/butterfly.png" id="15"]
+
+[sub_resource type="Gradient" id="Gradient_leaf_fade"]
+offsets = PackedFloat32Array(0, 0.15, 0.85, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_butterfly_fade"]
+offsets = PackedFloat32Array(0, 0.2, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(0.11, 0.08, 0.05, 0.6)
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tap_normal"]
+bg_color = Color(0.82, 0.5, 0.18, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.85, 0.6, 0.6)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tap_hover"]
+bg_color = Color(0.88, 0.58, 0.24, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.85, 0.6, 0.7)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tap_pressed"]
+bg_color = Color(0.68, 0.4, 0.13, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.85, 0.6, 0.6)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")
+
+[node name="BackgroundLayer" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+clip_contents = true
+
+[node name="BackgroundFar" type="TextureRect" parent="BackgroundLayer"]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = -30.0
+offset_right = 0.0
+offset_bottom = 0.0
+mouse_filter = 2
+texture = ExtResource("5")
+texture_filter = 1
+stretch_mode = 6
+
+[node name="BackgroundNear" type="TextureRect" parent="BackgroundLayer"]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = -30.0
+offset_right = 0.0
+offset_bottom = 0.0
+mouse_filter = 2
+texture = ExtResource("7")
+texture_filter = 1
+stretch_mode = 5
+
+[node name="SceneryLayer" type="Control" parent="."]
+mouse_filter = 2
+clip_contents = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="FlowerCluster" type="TextureRect" parent="SceneryLayer"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+mouse_filter = 2
+offset_left = 10.0
+offset_top = 560.0
+offset_right = 130.0
+offset_bottom = 680.0
+texture_filter = 1
+texture = ExtResource("12")
+stretch_mode = 5
+
+[node name="DistantDino" type="TextureRect" parent="SceneryLayer"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+mouse_filter = 2
+offset_left = 300.0
+offset_top = 590.0
+offset_right = 440.0
+offset_bottom = 680.0
+texture_filter = 1
+stretch_mode = 5
+texture = ExtResource("13")
+
+[node name="AmbientParticles" type="Node2D" parent="SceneryLayer"]
+
+[node name="Leaves" type="CPUParticles2D" parent="SceneryLayer/AmbientParticles"]
+position = Vector2(225, -10)
+emitting = true
+amount = 9
+lifetime = 6.0
+one_shot = false
+preprocess = 6.0
+randomness = 0.6
+emission_shape = 3
+emission_rect_extents = Vector2(225, 4)
+direction = Vector2(0, 1)
+spread = 30.0
+gravity = Vector2(0, 26)
+initial_velocity_min = 14.0
+initial_velocity_max = 30.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+scale_amount_min = 0.5
+scale_amount_max = 0.9
+color_ramp = SubResource("Gradient_leaf_fade")
+texture = ExtResource("14")
+
+[node name="Butterflies" type="CPUParticles2D" parent="SceneryLayer/AmbientParticles"]
+position = Vector2(225, 353)
+emitting = true
+amount = 4
+lifetime = 9.0
+one_shot = false
+preprocess = 9.0
+randomness = 0.8
+emission_shape = 3
+emission_rect_extents = Vector2(200, 320)
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, -4)
+initial_velocity_min = 12.0
+initial_velocity_max = 22.0
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+scale_amount_min = 0.7
+scale_amount_max = 1.0
+color_ramp = SubResource("Gradient_butterfly_fade")
+texture = ExtResource("15")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 8
+
+[node name="Header" type="PanelContainer" parent="Layout"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="HeaderVBox" type="VBoxContainer" parent="Layout/Header"]
+theme_override_constants/separation = 0
+
+[node name="HUD" parent="Layout/Header/HeaderVBox" instance=ExtResource("2")]
+unique_name_in_owner = true
+
+[node name="TapAreaMargin" type="MarginContainer" parent="Layout/Header/HeaderVBox"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="TapArea" type="Button" parent="Layout/Header/HeaderVBox/TapAreaMargin"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 120)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_tap_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tap_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_tap_pressed")
+text = "MAIN_FEED_PROMPT"
+autowrap_mode = 3
+
+[node name="ShopPanel" parent="Layout" instance=ExtResource("3")]
+unique_name_in_owner = true
+size_flags_vertical = 3
+
+[node name="PopupLayer" type="CanvasLayer" parent="."]
+
+[node name="OfflineEarningsPopup" parent="PopupLayer" instance=ExtResource("4")]
+
+[node name="SettingsPopup" parent="PopupLayer" instance=ExtResource("6")]
+unique_name_in_owner = true
+
+[node name="CollectionCompletePopup" parent="PopupLayer" instance=ExtResource("8")]
+unique_name_in_owner = true
+
+[node name="SpeciesDetailPopup" parent="PopupLayer" instance=ExtResource("10")]
+unique_name_in_owner = true
+
+[node name="AchievementsPopup" parent="PopupLayer" instance=ExtResource("11")]
+unique_name_in_owner = true
+
+[node name="PrestigePopup" parent="PopupLayer" instance=ExtResource("16")]
+unique_name_in_owner = true
+
+[node name="OnboardingOverlay" parent="." instance=ExtResource("9")]
+unique_name_in_owner = true

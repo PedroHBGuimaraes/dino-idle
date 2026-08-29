@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="PrestigeUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/prestige_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"prod_2"
+display_name = "Eco Genético"
+description = "Ecos do DNA ancestral fortalecem cada geração: +3% na produção de todas as espécies por nível."
+target = 0
+base_cost = 15.0
+cost_growth = 1.18
+value_per_level = 0.03
+max_level = 20

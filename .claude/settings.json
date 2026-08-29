@@ -1,0 +1,29 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:/Users/Pedro/Documents/dino-mobile/.claude/hooks/guard_paths.py\"",
+            "statusMessage": "Verificando se o caminho é seguro para editar..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:/Users/Pedro/Documents/dino-mobile/.claude/hooks/format_gd.py\"",
+            "timeout": 20,
+            "statusMessage": "Formatando/lintando GDScript..."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://adsmanager001"]
+
+[ext_resource type="Script" path="res://autoload/AdsManager.gd" id="1"]
+[ext_resource type="Script" path="res://addons/AdmobPlugin/Admob.gd" id="2"]
+
+[node name="AdsManager" type="Node"]
+script = ExtResource("1")
+
+[node name="Admob" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2")
+is_real = false
+android_debug_application_id = "ca-app-pub-3940256099942544~3347511713"
+android_real_application_id = "ca-app-pub-1898448267289061~2578530019"
+android_real_rewarded_id = "ca-app-pub-1898448267289061/7494603321"

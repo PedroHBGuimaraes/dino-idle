@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="DinoSpeciesData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://resources/dino_species_data.gd" id="1"]
+[ext_resource type="Script" path="res://resources/passive_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="Passive25"]
+script = ExtResource("2")
+type = 0
+value = 0.08
+
+[sub_resource type="Resource" id="Passive50"]
+script = ExtResource("2")
+type = 2
+value = 0.05
+
+[sub_resource type="Resource" id="Passive75"]
+script = ExtResource("2")
+type = 3
+value = 0.06
+threshold_level = 55
+
+[sub_resource type="Resource" id="Passive100"]
+script = ExtResource("2")
+type = 3
+value = 0.09
+threshold_level = 55
+
+[resource]
+script = ExtResource("1")
+id = &"giganotosaurus"
+display_name = "Giganotossauro"
+placeholder_color = Color(0.5, 0.18, 0.15, 1)
+unlock_cost = 326359518305.4
+base_production = 2837908854.83
+level_cost_base = 32635951830.54
+passive_25 = SubResource("Passive25")
+passive_50 = SubResource("Passive50")
+passive_75 = SubResource("Passive75")
+passive_100 = SubResource("Passive100")

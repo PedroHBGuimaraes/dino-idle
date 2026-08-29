@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="DinoSpeciesData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://resources/dino_species_data.gd" id="1"]
+[ext_resource type="Script" path="res://resources/passive_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="Passive25"]
+script = ExtResource("2")
+type = 0
+value = 0.08
+
+[sub_resource type="Resource" id="Passive50"]
+script = ExtResource("2")
+type = 2
+value = 0.05
+
+[sub_resource type="Resource" id="Passive75"]
+script = ExtResource("2")
+type = 3
+value = 0.06
+threshold_level = 40
+
+[sub_resource type="Resource" id="Passive100"]
+script = ExtResource("2")
+type = 3
+value = 0.09
+threshold_level = 40
+
+[resource]
+script = ExtResource("1")
+id = &"quetzalcoatlus"
+display_name = "Quetzalcoatlo"
+placeholder_color = Color(0.6, 0.5, 0.65, 1)
+unlock_cost = 694990710.1
+base_production = 6043397.48
+level_cost_base = 69499071.01
+passive_25 = SubResource("Passive25")
+passive_50 = SubResource("Passive50")
+passive_75 = SubResource("Passive75")
+passive_100 = SubResource("Passive100")

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="PrestigeUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/prestige_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"tap_1"
+display_name = "Toque Afiado"
+description = "Cada toque carrega um pouco mais de energia ancestral: +3% no valor do toque por nível."
+target = 1
+base_cost = 8.0
+cost_growth = 1.15
+value_per_level = 0.03
+max_level = 20

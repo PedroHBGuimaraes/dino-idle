@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://cjp7qurdyuike"]
+
+[ext_resource type="Script" path="res://scenes/main/Splash.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/scenes/bg_island.png" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dim"]
+bg_color = Color(0.05, 0.03, 0.02, 0.35)
+
+[node name="Splash" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("1")
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource("2")
+texture_filter = 1
+stretch_mode = 6
+
+[node name="Content" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="Content"]
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dim")
+
+[node name="Margin" type="MarginContainer" parent="Content/Panel"]
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="Content/Panel/Margin"]
+theme_override_constants/separation = 6
+
+[node name="TitleLabel" type="Label" parent="Content/Panel/Margin/VBox"]
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 40
+text = "Dino Island: Idle Tycoon"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="Content/Panel/Margin/VBox"]
+theme_override_colors/font_color = Color(1, 0.92, 0.75, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 16
+text = "SPLASH_TAGLINE"
+horizontal_alignment = 1

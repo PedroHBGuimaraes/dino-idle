@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="PrestigeUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/prestige_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"tap_3"
+display_name = "Mão Firme"
+description = "A prática de gerações torna cada toque mais certeiro: +7% no valor do toque por nível."
+target = 1
+base_cost = 90.0
+cost_growth = 1.22
+value_per_level = 0.07
+max_level = 15

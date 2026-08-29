@@ -1,0 +1,22 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Build artifacts exportados (APK/AAB) — binários grandes gerados, não versionar
+/build/
+
+# Recursos de tradução gerados a partir de translations.csv na importação
+# (mesma lógica do .godot/: artefato derivado, regenera ao abrir o editor).
+# A fonte versionada é translations.csv + translations.csv.import.
+*.translation
+
+# Android release signing — NUNCA versionar (chave + senhas insubstituíveis)
+*.keystore
+*.jks
+*.p12
+export_credentials.cfg
+
+# MCP dev tooling (not part of the shipped game)
+.claude/mcp-servers/*/venv/
+.claude/mcp-servers/*/python/__pycache__/
+__pycache__/

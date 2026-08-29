@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="PrestigeUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/prestige_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"tap_2"
+display_name = "Reflexo Ancestral"
+description = "Reflexos herdados de eras passadas: +5% no valor do toque por nível."
+target = 1
+base_cost = 30.0
+cost_growth = 1.18
+value_per_level = 0.05
+max_level = 20
