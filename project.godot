@@ -42,13 +42,13 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
 
-[gui]
-
-theme/custom="res://resources/theme/game_theme.tres"
-
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/AdmobPlugin/plugin.cfg", "res://addons/godot_mcp/plugin.cfg")
+
+[gui]
+
+theme/custom="res://resources/theme/game_theme.tres"
 
 [internationalization]
 
@@ -61,8 +61,8 @@ locale/fallback="pt"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
-textures/canvas_textures/default_texture_filter=0
 environment/defaults/default_clear_color=Color(0.11, 0.08, 0.05, 1)
