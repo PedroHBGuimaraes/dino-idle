@@ -33,7 +33,15 @@ var _flower_shown := false
 var _distant_dino_shown := false
 var _golden_glow_shown := false
 
+## Espécie "estrela" mostrada na área central de alimentar — a desbloqueada
+## de maior nível (empate: ordem do SpeciesDatabase). Recalculada a cada
+## desbloqueio/level up.
+var _feed_star_id: StringName = &""
+var _feed_bowl_tween: Tween
+
 @onready var _tap_area: Button = %TapArea
+@onready var _feed_dino = %FeedDino
+@onready var _feed_bowl: TextureRect = %FeedBowl
 @onready var _hud = %HUD
 @onready var _settings_popup = %SettingsPopup
 @onready var _shop_panel = %ShopPanel
@@ -58,6 +66,7 @@ func _ready() -> void:
 	_shop_panel.species_info_requested.connect(_species_detail_popup.open)
 	GameManager.collection_completed.connect(_collection_complete_popup.open)
 	GameManager.dino_state_changed.connect(_update_scenery_progress)
+	GameManager.dino_state_changed.connect(_on_dino_state_changed_for_feed)
 
 	# TapArea é a ação central do jogo — brilho constante, estilo "máquina
 	# ligada" de cassino, sempre convidando o toque.
@@ -72,6 +81,7 @@ func _ready() -> void:
 		_start_onboarding()
 
 	_update_scenery_progress()
+	_refresh_feed_star()
 
 
 ## Passa os controles reais que cada passo do tutorial destaca. O card do
@@ -101,16 +111,67 @@ func _on_tap_area_gui_input(event: InputEvent) -> void:
 
 
 func _on_tap_area_pressed() -> void:
-	AudioManager.play_tap()
 	var amount := GameManager.tap()
+	AudioManager.play_tap(GameManager.get_combo_count())
+	Input.vibrate_handheld(12)
 
-	var local_pos := _last_tap_local_pos if _has_tap_position else _tap_area.size / 2.0
-	var pos := _tap_area.global_position + local_pos
+	# O número sai de cima do dino que está sendo alimentado (não do ponto do
+	# dedo) — reforça "eu alimentei ESTE dino", e fica legível mesmo com o
+	# polegar cobrindo a área.
+	var pos: Vector2 = _feed_dino.global_position + _feed_dino.size * Vector2(0.5, 0.3)
 	_has_tap_position = false
 
 	EffectsManager.spawn_floating_number("+%s" % FoodFormat.format(amount), pos)
 	_bounce_tap_area()
+	_bump_feed_bowl()
+	if _feed_dino.has_method("play_feed_reaction"):
+		_feed_dino.play_feed_reaction()
 	_onboarding.register_tap()
+
+
+## Um "chega mais" da tigela a cada alimentada — micro-squash rápido.
+func _bump_feed_bowl() -> void:
+	_feed_bowl.pivot_offset = _feed_bowl.size / 2.0
+	if _feed_bowl_tween and _feed_bowl_tween.is_valid():
+		_feed_bowl_tween.kill()
+	_feed_bowl_tween = create_tween()
+	(
+		_feed_bowl_tween
+		. tween_property(_feed_bowl, "scale", Vector2(1.12, 0.9), 0.05)
+		. set_trans(Tween.TRANS_QUAD)
+		. set_ease(Tween.EASE_OUT)
+	)
+	(
+		_feed_bowl_tween
+		. tween_property(_feed_bowl, "scale", Vector2.ONE, 0.18)
+		. set_trans(Tween.TRANS_ELASTIC)
+		. set_ease(Tween.EASE_OUT)
+	)
+
+
+## Escolhe a espécie estrela (desbloqueada de maior nível) e atualiza o
+## visual central. Chamado ao carregar e a cada mudança de estado de dino.
+func _refresh_feed_star() -> void:
+	var best: DinoSpeciesData = null
+	var best_level := -1
+	for species: DinoSpeciesData in SpeciesDatabase.get_all():
+		if not GameManager.is_unlocked(species.id):
+			continue
+		var level := GameManager.get_level(species.id)
+		if level > best_level:
+			best_level = level
+			best = species
+	if best == null:
+		return
+	if best.id == _feed_star_id:
+		_feed_dino.set_level(best, best_level)
+	else:
+		_feed_star_id = best.id
+		_feed_dino.setup(best, best_level)
+
+
+func _on_dino_state_changed_for_feed(_species_id: StringName, _unlocked: bool, _level: int) -> void:
+	_refresh_feed_star()
 
 
 func _bounce_tap_area() -> void:

@@ -11,6 +11,31 @@ const OPEN_DURATION := 0.18
 const CLOSE_DURATION := 0.12
 const HIDDEN_SCALE := Vector2(0.85, 0.85)
 
+## Quantos popups estão abertos agora — o fundo escurecido (ModalScrim) só
+## aparece quando o primeiro abre e some quando o último fecha. Estático
+## porque o scrim é um só, compartilhado por todos os popups.
+static var _open_count := 0
+
+
+static func _scrim(popup: Control) -> Node:
+	return popup.get_tree().get_first_node_in_group(&"modal_scrim")
+
+
+static func _push_scrim(popup: Control) -> void:
+	_open_count += 1
+	if _open_count == 1:
+		var scrim := _scrim(popup)
+		if scrim:
+			scrim.show_scrim()
+
+
+static func _pop_scrim(popup: Control) -> void:
+	_open_count = maxi(0, _open_count - 1)
+	if _open_count == 0:
+		var scrim := _scrim(popup)
+		if scrim:
+			scrim.hide_scrim()
+
 
 ## `popup.size` pode estar um frame atrasado em relação a uma mudança de
 ## conteúdo que acabou de acontecer na mesma chamada (labels/linhas trocadas
@@ -24,6 +49,8 @@ static func fit_pivot_to_size(popup: Control) -> void:
 
 
 static func animate_open(popup: Control) -> Tween:
+	if not popup.visible:
+		_push_scrim(popup)
 	fit_pivot_to_size(popup)
 	popup.scale = HIDDEN_SCALE
 	popup.modulate.a = 0.0
@@ -47,6 +74,8 @@ static func animate_open(popup: Control) -> Tween:
 
 
 static func animate_close(popup: Control) -> Tween:
+	if popup.visible:
+		_pop_scrim(popup)
 	var tween := popup.create_tween()
 	tween.set_parallel(true)
 	(

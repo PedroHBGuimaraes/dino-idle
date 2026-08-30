@@ -434,6 +434,12 @@ func _get_global_tap_multiplier() -> float:
 	return multiplier * PrestigeManager.get_tap_multiplier()
 
 
+## Contagem atual do combo de cliques (0 se não há combo ativo) — leitura
+## pública pra UI/áudio (ex. AudioManager sobe o tom do toque com o combo).
+func get_combo_count() -> int:
+	return _combo_count
+
+
 func _combo_seconds_since_last_tap() -> float:
 	return Time.get_unix_time_from_system() - _combo_last_tap_unix
 

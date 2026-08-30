@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://rewardburst001"]
+[gd_scene load_steps=4 format=3 uid="uid://rewardburst001"]
 
 [ext_resource type="Script" path="res://scenes/effects/RewardBurst.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/particles/spark_star.png" id="2"]
 
 [sub_resource type="Gradient" id="Gradient_sparkle"]
 colors = PackedColorArray(1, 0.87, 0.35, 1, 1, 0.6, 0.2, 0)
@@ -16,7 +17,8 @@ spread = 180.0
 gravity = Vector2(0, 320)
 initial_velocity_min = 90.0
 initial_velocity_max = 190.0
-scale_amount_min = 0.6
-scale_amount_max = 1.6
+scale_amount_min = 0.35
+scale_amount_max = 0.9
 color_ramp = SubResource("Gradient_sparkle")
+texture = ExtResource("2")
 script = ExtResource("1")

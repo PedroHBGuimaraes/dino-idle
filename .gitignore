@@ -20,3 +20,6 @@ export_credentials.cfg
 .claude/mcp-servers/*/venv/
 .claude/mcp-servers/*/python/__pycache__/
 __pycache__/
+
+# JetBrains IDE
+.idea/

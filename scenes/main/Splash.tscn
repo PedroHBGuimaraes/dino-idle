@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/main/Splash.gd" id="1"]
 [ext_resource type="Texture2D" path="res://assets/scenes/bg_island.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/scenes/logo.png" id="3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dim"]
 bg_color = Color(0.05, 0.03, 0.02, 0.35)
@@ -37,9 +38,18 @@ theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 24
 
 [node name="VBox" type="VBoxContainer" parent="Content/Panel/Margin"]
-theme_override_constants/separation = 6
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Logo" type="TextureRect" parent="Content/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 150)
+texture_filter = 1
+texture = ExtResource("3")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="TitleLabel" type="Label" parent="Content/Panel/Margin/VBox"]
+visible = false
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6

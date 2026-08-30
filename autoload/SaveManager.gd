@@ -14,6 +14,10 @@ const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 const AUTOSAVE_INTERVAL_SEC := 30.0
 const MAX_OFFLINE_SECONDS := 8.0 * 3600.0  # teto de 8h de produção offline
+## Abaixo disto não vale mostrar o popup de "bem-vindo de volta" — fechar e
+## reabrir o app rápido não deveria disparar uma tela de "você ganhou X em
+## 0 min". A comida do intervalo curto ainda é creditada, sem popup.
+const MIN_OFFLINE_POPUP_SECONDS := 120.0
 
 ## Mobile pode matar o app sem aviso — salva em qualquer sinal de perda de foco/saída.
 const _SAVE_TRIGGER_NOTIFICATIONS := [
@@ -144,7 +148,8 @@ func load_game() -> void:
 		var offline_food := rate * elapsed
 		if offline_food > 0.0:
 			GameManager.add_food(offline_food)
-			offline_earnings_ready.emit(offline_food, elapsed)
+			if elapsed >= MIN_OFFLINE_POPUP_SECONDS:
+				offline_earnings_ready.emit(offline_food, elapsed)
 
 	# Agora todo o estado já foi carregado — seguro regravar pra fixar o
 	# idioma detectado num save que ainda não o tinha.

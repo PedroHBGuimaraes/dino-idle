@@ -16,9 +16,15 @@ var _popup_tween: Tween
 
 
 func _ready() -> void:
+	add_to_group(&"modal_popup")
 	_close_button.pressed.connect(_on_close_pressed)
 	AchievementManager.achievement_unlocked.connect(_on_achievement_unlocked)
 	hide()
+
+
+## Fechar pelo toque no fundo escurecido (ver ModalScrim).
+func request_close() -> void:
+	_on_close_pressed()
 
 
 func open() -> void:

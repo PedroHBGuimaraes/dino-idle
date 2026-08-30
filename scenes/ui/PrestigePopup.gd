@@ -23,6 +23,7 @@ var _shine: ShineSweep
 
 
 func _ready() -> void:
+	add_to_group(&"modal_popup")
 	_close_button.pressed.connect(_on_close_pressed)
 	_prestige_button.pressed.connect(_on_prestige_pressed)
 	PrestigeManager.fossils_changed.connect(_on_fossils_changed)
@@ -41,6 +42,13 @@ func open() -> void:
 	if _popup_tween and _popup_tween.is_valid():
 		_popup_tween.kill()
 	_popup_tween = PopupTransition.animate_open(self)
+
+
+## Fechar pelo toque no fundo escurecido (ver ModalScrim). Cancela também
+## uma confirmação de prestígio pendente — tocar fora = "deixa pra lá".
+func request_close() -> void:
+	_awaiting_confirmation = false
+	_on_close_pressed()
 
 
 func _on_close_pressed() -> void:

@@ -1,8 +1,26 @@
-[gd_scene load_steps=6 format=3 uid="uid://dinocard001"]
+[gd_scene load_steps=11 format=3 uid="uid://dinocard001"]
 
 [ext_resource type="Script" path="res://scenes/ui/DinoCard.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/dino/Dino.tscn" id="2"]
 [ext_resource type="StyleBox" path="res://resources/theme/panel_glass.tres" id="3"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_info.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/ui/badges_sheet.png" id="5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_badge25"]
+atlas = ExtResource("5")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_badge50"]
+atlas = ExtResource("5")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_badge75"]
+atlas = ExtResource("5")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_badge100"]
+atlas = ExtResource("5")
+region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
 bg_color = Color(0, 0, 0, 0.35)
@@ -54,47 +72,67 @@ clip_text = true
 text_overrun_behavior = 3
 size_flags_horizontal = 3
 text = "Espécie"
-theme_override_font_sizes/font_size = 20
-
-[node name="PassiveBadges" type="HBoxContainer" parent="Margin/HBox/Info/NameRow"]
-mouse_filter = 2
-theme_override_constants/separation = 2
-
-[node name="Badge25" type="Label" parent="Margin/HBox/Info/NameRow/PassiveBadges"]
-unique_name_in_owner = true
-visible = false
-theme_override_font_sizes/font_size = 15
-text = "●"
-
-[node name="Badge50" type="Label" parent="Margin/HBox/Info/NameRow/PassiveBadges"]
-unique_name_in_owner = true
-visible = false
-theme_override_font_sizes/font_size = 15
-text = "●"
-
-[node name="Badge75" type="Label" parent="Margin/HBox/Info/NameRow/PassiveBadges"]
-unique_name_in_owner = true
-visible = false
-theme_override_font_sizes/font_size = 15
-text = "●"
-
-[node name="Badge100" type="Label" parent="Margin/HBox/Info/NameRow/PassiveBadges"]
-unique_name_in_owner = true
-visible = false
 theme_override_font_sizes/font_size = 16
-text = "★"
 
 [node name="InfoButton" type="Button" parent="Margin/HBox/Info/NameRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(38, 38)
+custom_minimum_size = Vector2(40, 40)
 mouse_filter = 1
-theme_override_font_sizes/font_size = 19
-flat = true
-text = "ⓘ"
+theme_type_variation = &"FlatIconButton"
+icon = ExtResource("4")
+expand_icon = true
 
-[node name="StatusLabel" type="Label" parent="Margin/HBox/Info"]
+[node name="StatusRow" type="HBoxContainer" parent="Margin/HBox/Info"]
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="StatusLabel" type="Label" parent="Margin/HBox/Info/StatusRow"]
 unique_name_in_owner = true
 text = "Bloqueado"
+
+[node name="PassiveBadges" type="HBoxContainer" parent="Margin/HBox/Info/StatusRow"]
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="Badge25" type="TextureRect" parent="Margin/HBox/Info/StatusRow/PassiveBadges"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(22, 22)
+mouse_filter = 1
+texture_filter = 1
+texture = SubResource("AtlasTexture_badge25")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Badge50" type="TextureRect" parent="Margin/HBox/Info/StatusRow/PassiveBadges"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(22, 22)
+mouse_filter = 1
+texture_filter = 1
+texture = SubResource("AtlasTexture_badge50")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Badge75" type="TextureRect" parent="Margin/HBox/Info/StatusRow/PassiveBadges"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(22, 22)
+mouse_filter = 1
+texture_filter = 1
+texture = SubResource("AtlasTexture_badge75")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Badge100" type="TextureRect" parent="Margin/HBox/Info/StatusRow/PassiveBadges"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(24, 24)
+mouse_filter = 1
+texture_filter = 1
+texture = SubResource("AtlasTexture_badge100")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="ProductionLabel" type="Label" parent="Margin/HBox/Info"]
 unique_name_in_owner = true

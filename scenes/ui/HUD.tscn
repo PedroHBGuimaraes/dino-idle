@@ -1,10 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://hudpanel001"]
+[gd_scene load_steps=6 format=3 uid="uid://hudpanel001"]
 
 [ext_resource type="Script" path="res://scenes/ui/HUD.gd" id="1"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_food.png" id="2"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_ad_play.png" id="3"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_settings.png" id="4"]
 [ext_resource type="Texture2D" path="res://assets/ui/icon_achievements.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_prestige.png" id="6"]
 
 [node name="HUD" type="MarginContainer"]
 theme_override_constants/margin_left = 16
@@ -47,9 +48,9 @@ stretch_mode = 3
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(44, 44)
-theme_override_font_sizes/font_size = 22
-flat = true
-text = "♻"
+theme_type_variation = &"FlatIconButton"
+icon = ExtResource("6")
+expand_icon = true
 
 [node name="ProductionLabel" type="Label" parent="VBox"]
 unique_name_in_owner = true

@@ -16,6 +16,7 @@ var _popup_tween: Tween
 
 
 func _ready() -> void:
+	add_to_group(&"modal_popup")
 	_music_slider.value = AudioManager.music_volume
 	_sfx_slider.value = AudioManager.sfx_volume
 	_populate_language_option()
@@ -47,6 +48,12 @@ func open() -> void:
 	if _popup_tween and _popup_tween.is_valid():
 		_popup_tween.kill()
 	_popup_tween = PopupTransition.animate_open(self)
+
+
+## Fechar pelo toque no fundo escurecido (ver ModalScrim) — mesma coisa que
+## o botão Fechar.
+func request_close() -> void:
+	_on_close_pressed()
 
 
 func _on_close_pressed() -> void:

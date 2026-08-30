@@ -82,19 +82,30 @@ func _gui_input(event: InputEvent) -> void:
 		play_tap_reaction()
 
 
-func setup(data: DinoSpeciesData, level: int) -> void:
+## `animated` = false quando este visual é só a silhueta de um dino ainda
+## bloqueado (ver DinoCard._refresh): não vale montar o AnimatedTexture de
+## idle — são 5 texturas por card só pra ficar piscando atrás de uma mancha
+## quase preta. Com ~30 espécies isso é memória/CPU à toa no boot.
+func setup(data: DinoSpeciesData, level: int, animated: bool = true) -> void:
 	_species_id = data.id
-	set_level(data, level)
+	set_level(data, level, animated)
 
 
-func set_level(data: DinoSpeciesData, level: int) -> void:
+func set_level(data: DinoSpeciesData, level: int, animated: bool = true) -> void:
 	var stage := data.stage_for_level(level)
 	var stage_name: String = String(DinoSpeciesData.STAGE_NAMES[stage]).to_lower()
 	var path := "%sdino_%s_%s.png" % [ART_DIR, _species_id, stage_name]
 
+	# Idle animado: o Adulto usa os 5 frames "dino_<id>_idle_<0..4>.png"; os
+	# estágios Filhote/Jovem usam, SE existirem, "dino_<id>_idle_<estagio>_<0..3>.png"
+	# (drop-in — sem eles, cai na respiração por tween, que roda sempre). Ver
+	# _build_idle_animation.
 	var idle_animation: AnimatedTexture = null
-	if stage == DinoSpeciesData.Stage.ADULTO:
-		idle_animation = _build_idle_animation()
+	if animated:
+		if stage == DinoSpeciesData.Stage.ADULTO:
+			idle_animation = _build_idle_animation("", IDLE_ANIMATION_FRAME_COUNT)
+		else:
+			idle_animation = _build_idle_animation(stage_name + "_", 4)
 
 	if idle_animation:
 		texture = idle_animation
@@ -106,20 +117,23 @@ func set_level(data: DinoSpeciesData, level: int) -> void:
 	set_legendary(data.is_max_level(level))
 
 
-## Monta o AnimatedTexture de idle desta espécie, se os 5 frames existirem
-## em IDLE_ANIMATION_DIR. Retorna null se faltar qualquer frame (nesse caso
-## set_level() cai de volta pro sprite estático/placeholder).
-func _build_idle_animation() -> AnimatedTexture:
+## Monta o AnimatedTexture de idle desta espécie a partir de
+## "dino_<id>_idle_<prefix><0..count-1>.png" em IDLE_ANIMATION_DIR.
+## `prefix` vazio = frames do Adulto (dino_<id>_idle_0.png ...);
+## `prefix` "filhote_"/"jovem_" = frames daquele estágio, se existirem.
+## Retorna null se faltar qualquer frame — set_level() então cai no sprite
+## estático e a respiração por tween assume.
+func _build_idle_animation(prefix: String, count: int) -> AnimatedTexture:
 	var frame_paths: Array[String] = []
-	for i in IDLE_ANIMATION_FRAME_COUNT:
-		var frame_path := "%sdino_%s_idle_%d.png" % [IDLE_ANIMATION_DIR, _species_id, i]
+	for i in count:
+		var frame_path := "%sdino_%s_idle_%s%d.png" % [IDLE_ANIMATION_DIR, _species_id, prefix, i]
 		if not ResourceLoader.exists(frame_path):
 			return null
 		frame_paths.append(frame_path)
 
 	var animation := AnimatedTexture.new()
-	animation.frames = IDLE_ANIMATION_FRAME_COUNT
-	for i in IDLE_ANIMATION_FRAME_COUNT:
+	animation.frames = count
+	for i in count:
 		animation.set_frame_texture(i, load(frame_paths[i]))
 		animation.set_frame_duration(i, IDLE_ANIMATION_FRAME_DURATION)
 	return animation
@@ -262,6 +276,41 @@ func play_growth_effect(is_stage_transition: bool) -> void:
 func play_tap_reaction() -> void:
 	AudioManager.play_poke()
 	_play_hop_wobble()
+
+
+## Reação quando o dino é alimentado pela área central (ver Main.gd): uma
+## "mordida" rápida — abaixa a cabeça (squash em Y + leve inclinação) e
+## volta. Curta e seca de propósito, pra alimentar em sequência parecer
+## mastigar sem parar. Sem som (o som da alimentada é do Main).
+func play_feed_reaction() -> void:
+	if _growth_tween and _growth_tween.is_valid():
+		return
+	if _breathing_tween and _breathing_tween.is_valid():
+		_breathing_tween.kill()
+	if _reaction_tween and _reaction_tween.is_valid():
+		_reaction_tween.kill()
+
+	scale = Vector2.ONE
+	rotation = 0.0
+
+	_reaction_tween = create_tween()
+	(
+		_reaction_tween
+		. tween_property(self, "scale", Vector2(1.08, 0.86), 0.05)
+		. set_trans(Tween.TRANS_QUAD)
+		. set_ease(Tween.EASE_OUT)
+	)
+	_reaction_tween.parallel().tween_property(self, "rotation", deg_to_rad(6.0), 0.05)
+	(
+		_reaction_tween
+		. tween_property(self, "scale", Vector2.ONE, 0.16)
+		. set_trans(Tween.TRANS_ELASTIC)
+		. set_ease(Tween.EASE_OUT)
+	)
+	_reaction_tween.parallel().tween_property(self, "rotation", 0.0, 0.16).set_trans(
+		Tween.TRANS_SINE
+	)
+	_reaction_tween.tween_callback(_start_idle_animation)
 
 
 ## Pulinho rápido com leve giro na aterrissagem, tipo "susto/curiosidade" —

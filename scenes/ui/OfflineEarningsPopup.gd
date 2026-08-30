@@ -17,9 +17,15 @@ var _popup_tween: Tween
 
 
 func _ready() -> void:
+	add_to_group(&"modal_popup")
 	_close_button.pressed.connect(_on_close_pressed)
 	_double_button.pressed.connect(_on_double_button_pressed)
 	SaveManager.offline_earnings_ready.connect(_on_offline_earnings_ready)
+
+
+## Fechar pelo toque no fundo escurecido (ver ModalScrim).
+func request_close() -> void:
+	_on_close_pressed()
 
 
 func _on_close_pressed() -> void:

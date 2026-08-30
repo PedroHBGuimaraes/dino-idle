@@ -73,8 +73,13 @@ func play_music() -> void:
 		_music_player.play()
 
 
-func play_tap() -> void:
-	_play(SFX_TAP)
+## `combo_count` faz o tom do "toque" subir conforme a sequência de cliques
+## rápidos cresce (teto em +~1 oitava aos 24 cliques), pra dar a sensação de
+## escalada — um combo 20x soando igual a um toque solto matava o "juice".
+## Uma variação minúscula aleatória evita o efeito de metralhadora idêntica.
+func play_tap(combo_count: int = 0) -> void:
+	var pitch := 1.0 + minf(float(combo_count), 24.0) * 0.03 + randf_range(-0.03, 0.03)
+	_play(SFX_TAP, 0.0, pitch)
 
 
 func play_unlock() -> void:
@@ -103,13 +108,14 @@ func play_milestone() -> void:
 	_play(SFX_MILESTONE)
 
 
-func _play(stream: AudioStream, volume_db: float = 0.0) -> void:
+func _play(stream: AudioStream, volume_db: float = 0.0, pitch_scale: float = 1.0) -> void:
 	var player := _sfx_pool[_sfx_pool_index]
 	_sfx_pool_index = (_sfx_pool_index + 1) % _sfx_pool.size()
 	player.stream = stream
-	# Os players do pool são reaproveitados — sempre reatribui o volume, senão
-	# um _play com ganho custom "vaza" pro próximo som que cair nesse player.
+	# Os players do pool são reaproveitados — sempre reatribui volume/pitch,
+	# senão um _play com valor custom "vaza" pro próximo som nesse player.
 	player.volume_db = volume_db
+	player.pitch_scale = pitch_scale
 	player.play()
 
 

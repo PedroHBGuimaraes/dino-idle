@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/ui/CollectionCompletePopup.gd" id="1"]
 [ext_resource type="StyleBox" path="res://resources/theme/panel_glass.tres" id="2"]
+[ext_resource type="Texture2D" path="res://assets/particles/spark_star.png" id="3"]
 
 [sub_resource type="Gradient" id="Gradient_confetti"]
 offsets = PackedFloat32Array(0, 0.5, 1)
@@ -48,10 +49,11 @@ spread = 140.0
 gravity = Vector2(0, 380)
 initial_velocity_min = 140.0
 initial_velocity_max = 260.0
-scale_amount_min = 0.5
-scale_amount_max = 1.4
+scale_amount_min = 0.35
+scale_amount_max = 0.95
 scale_amount_curve = SubResource("Curve_confetti_scale")
 color_ramp = SubResource("Gradient_confetti")
+texture = ExtResource("3")
 
 [node name="Margin" type="MarginContainer" parent="Center/Panel"]
 theme_override_constants/margin_left = 24

@@ -27,6 +27,8 @@ func _ready() -> void:
 
 func open() -> void:
 	show()
+	AudioManager.play_milestone()
+	Input.vibrate_handheld(120)
 	if _tween and _tween.is_valid():
 		_tween.kill()
 

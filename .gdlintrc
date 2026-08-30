@@ -1,0 +1,4 @@
+# Config do gdlint (gdtoolkit). GameManager é a fonte única de estado do
+# jogo e legitimamente expõe muitos getters/ações — 20 é apertado demais
+# pra esse papel.
+max-public-methods: 30

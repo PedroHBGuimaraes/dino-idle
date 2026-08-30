@@ -12,8 +12,13 @@ signal prestige_pressed
 const ShineSweepScene := preload("res://scenes/effects/ShineSweep.tscn")
 
 var _combo_tween: Tween
+var _food_punch_tween: Tween
 var _boost_shine: ShineSweep
 var _bonus_shine: ShineSweep
+
+## Última string de produção já escrita no label — evita remontar o texto
+## (com Loc.t + dicionário) a cada frame quando o valor nem mudou.
+var _last_production_text := ""
 
 ## Último estado de combo recebido — guardado só pra re-renderizar o label
 ## quando o idioma muda (o texto tem "Combo:" traduzido).
@@ -33,6 +38,7 @@ var _combo_bonus_mult := 1.0
 
 func _ready() -> void:
 	GameManager.food_changed.connect(_on_food_changed)
+	GameManager.food_earned.connect(_on_food_earned)
 	GameManager.production_boost_changed.connect(_on_production_boost_changed)
 	GameManager.combo_changed.connect(_on_combo_changed)
 	GameManager.dino_state_changed.connect(_on_dino_state_changed)
@@ -69,16 +75,48 @@ func _notification(what: int) -> void:
 
 
 func _process(_delta: float) -> void:
-	_production_label.text = Loc.t(
+	var production_text := Loc.t(
 		"HUD_PRODUCTION",
 		{"rate": FoodFormat.format_rate(GameManager.get_total_production_per_second())}
 	)
+	if production_text != _last_production_text:
+		_last_production_text = production_text
+		_production_label.text = production_text
 	if GameManager.is_production_boost_active():
 		_refresh_boost_button()
 
 
 func _on_food_changed(new_amount: float) -> void:
 	_food_label.text = Loc.t("HUD_FOOD", {"amount": FoodFormat.format(new_amount)})
+
+
+## "Pancada" no contador de comida quando entra um ganho DISCRETO relevante
+## (toque com combo, bônus de anúncio, ganhos offline) — não o pingo
+## constante da produção passiva, que faria o número tremer sem parar.
+func _on_food_earned(amount: float) -> void:
+	var passive_drip := GameManager.get_total_production_per_second() * 0.5
+	if amount < maxf(passive_drip, 2.0):
+		return
+	_punch_food_label()
+
+
+func _punch_food_label() -> void:
+	_food_label.pivot_offset = Vector2(0.0, _food_label.size.y / 2.0)
+	if _food_punch_tween and _food_punch_tween.is_valid():
+		_food_punch_tween.kill()
+	_food_punch_tween = create_tween()
+	(
+		_food_punch_tween
+		. tween_property(_food_label, "scale", Vector2(1.12, 1.12), 0.07)
+		. set_trans(Tween.TRANS_QUAD)
+		. set_ease(Tween.EASE_OUT)
+	)
+	(
+		_food_punch_tween
+		. tween_property(_food_label, "scale", Vector2.ONE, 0.16)
+		. set_trans(Tween.TRANS_ELASTIC)
+		. set_ease(Tween.EASE_OUT)
+	)
 
 
 func _on_production_boost_changed(_active: bool, _expires_unix: float) -> void:

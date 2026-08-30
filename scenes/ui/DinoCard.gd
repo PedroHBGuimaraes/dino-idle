@@ -21,15 +21,10 @@ const MAX_LEVEL_COLOR := Color(0.16, 0.55, 0.25)
 const SILHOUETTE_COLOR := Color(0.02, 0.02, 0.02, 0.9)
 const REVEALED_COLOR := Color(1, 1, 1, 1)
 
-## Cor do selo por marco (bronze/prata/ouro/lendário) — fixa por marco,
-## independente do TIPO de passiva que a espécie tem ali (isso já varia
-## por espécie e é descrito no tooltip, ver _refresh_badges).
-const BADGE_COLORS := {
-	25: Color(0.8, 0.55, 0.35, 1),
-	50: Color(0.75, 0.78, 0.8, 1),
-	75: Color(1.0, 0.84, 0.3, 1),
-	100: Color(1.0, 0.55, 0.85, 1),
-}
+## Marcos de nível que concedem passiva — cada um tem seu selo (medalha
+## bronze/prata/ouro/estrela lendária, ver assets/ui/badges_sheet.png,
+## recortado em AtlasTexture no DinoCard.tscn).
+const PASSIVE_MILESTONES := [25, 50, 75, 100]
 
 var _species: DinoSpeciesData
 var _ready_pulse_tween: Tween
@@ -42,10 +37,10 @@ var _shine: ShineSweep
 @onready var _production_label: Label = %ProductionLabel
 @onready var _evolve_progress: ProgressBar = %EvolveProgress
 @onready var _action_button: Button = %ActionButton
-@onready var _badge_25: Label = %Badge25
-@onready var _badge_50: Label = %Badge50
-@onready var _badge_75: Label = %Badge75
-@onready var _badge_100: Label = %Badge100
+@onready var _badge_25: TextureRect = %Badge25
+@onready var _badge_50: TextureRect = %Badge50
+@onready var _badge_75: TextureRect = %Badge75
+@onready var _badge_100: TextureRect = %Badge100
 @onready var _info_button: Button = %InfoButton
 
 
@@ -58,9 +53,6 @@ func _ready() -> void:
 
 	_shine = ShineSweepScene.instantiate()
 	_action_button.add_child(_shine)
-
-	for milestone: int in BADGE_COLORS:
-		_get_badge_label(milestone).add_theme_color_override("font_color", BADGE_COLORS[milestone])
 
 
 func setup(species: DinoSpeciesData) -> void:
@@ -116,8 +108,10 @@ func _on_action_pressed() -> void:
 			)
 			if just_reached_max:
 				AudioManager.play_milestone()
+				Input.vibrate_handheld(60)
 			else:
 				AudioManager.play_evolve()
+				Input.vibrate_handheld(25 if is_stage_transition else 12)
 			# _refresh() já rodou (dino_state_changed é síncrono), então o
 			# sprite já está na forma nova quando o pop de escala começa.
 			_dino_visual.play_growth_effect(is_stage_transition)
@@ -129,6 +123,7 @@ func _on_action_pressed() -> void:
 	else:
 		if GameManager.unlock_dino(_species.id):
 			AudioManager.play_unlock()
+			Input.vibrate_handheld(40)
 			_spawn_reward_burst()
 
 
@@ -160,9 +155,10 @@ func _refresh() -> void:
 		_dino_visual.setup(_species, level)
 	else:
 		# Silhueta escurecida do estágio Adulto — dá a sensação de "tem algo
-		# esperando ali" em vez de deixar o espaço vazio.
+		# esperando ali" em vez de deixar o espaço vazio. `animated = false`:
+		# silhueta não precisa do AnimatedTexture de idle (ver Dino.setup).
 		_dino_visual.modulate = SILHOUETTE_COLOR
-		_dino_visual.setup(_species, DinoSpeciesData.MAX_LEVEL)
+		_dino_visual.setup(_species, DinoSpeciesData.MAX_LEVEL, false)
 
 	_refresh_text()
 
@@ -195,8 +191,8 @@ func _refresh_production_label() -> void:
 func _refresh_badges() -> void:
 	var unlocked := GameManager.is_unlocked(_species.id)
 	var level := GameManager.get_level(_species.id) if unlocked else 0
-	for milestone: int in BADGE_COLORS:
-		var badge := _get_badge_label(milestone)
+	for milestone: int in PASSIVE_MILESTONES:
+		var badge := _get_badge(milestone)
 		badge.visible = unlocked and level >= milestone
 		var passive := _species.get_passive_for_milestone(milestone)
 		if passive != null:
@@ -205,7 +201,7 @@ func _refresh_badges() -> void:
 			)
 
 
-func _get_badge_label(milestone: int) -> Label:
+func _get_badge(milestone: int) -> TextureRect:
 	match milestone:
 		25:
 			return _badge_25
